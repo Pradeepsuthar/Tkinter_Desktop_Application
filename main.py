@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import *
 from tkinter import ttk, messagebox
 from random import randint
-import pandas as pd
 from datetime import date
 from dbConfig import *
 
@@ -23,7 +22,7 @@ class SeaofBTCapp(tk.Tk):
         self.width = self.winfo_screenwidth()
         self.height = self.winfo_screenheight()
         self.bind("<Escape>", exit)  # Press <ESC> to exit
-        # self.overrideredirect(1)
+        self.overrideredirect(1)
         self.geometry("%dx%d+0+0" % (self.width, self.height))
         self.title("Visual Studio Code 2020")
         self.iconbitmap('app_icon.ico')
@@ -31,11 +30,11 @@ class SeaofBTCapp(tk.Tk):
         # ----------------- Variables -----------------------------#
         today = date.today()
         self.FinancialYear_date_var = StringVar()
-        FinancialYear_date = today.strftime("%d-%m-%Y")
+        FinancialYear_date ="01-04-"+str(today.year)
         self.FinancialYear_date_var.set(FinancialYear_date)
         
         self.booking_date_var = StringVar()
-        Booking_date = today.strftime("%d-%m-%Y")
+        Booking_date = "31-03-"+str(today.year+1)
         self.booking_date_var.set(Booking_date)
 
         self.CompanyName = StringVar()
@@ -55,11 +54,11 @@ class SeaofBTCapp(tk.Tk):
         filemenu.add_command(label='New')
         filemenu.config(bg=background_color, fg=foreground_color)
         filemenu.add_command(
-            label='Home Page', command=lambda: self.show_frame(HomePage))
+            label='HOME', command=lambda: self.show_frame(HomePage))
         filemenu.add_command(
-            label='One Page', command=lambda: self.show_frame(PageOne))
+            label='MASTERS', command=lambda: self.show_frame(PageOne))
         filemenu.add_command(
-            label='Two Page', command=lambda: self.show_frame(PageTwo))
+            label='STOCK', command=lambda: self.show_frame(PageTwo))
         filemenu.add_command(label='Open...')
         filemenu.add_separator()
         filemenu.add_command(label='Exit', command=self.quit)
@@ -79,6 +78,18 @@ class SeaofBTCapp(tk.Tk):
         menu.add_cascade(label='Settings', menu=settingsmenu)
         settingsmenu.add_command(label='Light Theams')
         #-------------------End Menu-----------------------------#
+
+        left_frame = Frame(self)
+        left_frame.pack( side = LEFT, fill=Y)
+        
+        Button(left_frame, text="HOME", activeforeground = "white",activebackground = "#242323",bd=1, relief=GROOVE, command=lambda: self.show_frame(HomePage)).pack(padx=10, pady=5, fill=BOTH)
+        Button(left_frame, text="MASTERS", activeforeground = "white",activebackground = "#242323",bd=1, relief=GROOVE, command=lambda: self.show_frame(PageOne)).pack(padx=10, pady=5, fill=BOTH)
+        Button(left_frame, text="STOCK", activeforeground = "white",activebackground = "#242323",bd=1, relief=GROOVE, command=lambda: self.show_frame(PageTwo)).pack(padx=10, pady=5, fill=BOTH)
+        Button(left_frame, text="SALES (Billing)", activeforeground = "white",activebackground = "#242323",bd=1, relief=GROOVE).pack(padx=10, pady=5, fill=BOTH)
+        Button(left_frame, text="ACCOUNTS", activeforeground = "white",activebackground = "#242323",bd=1, relief=GROOVE).pack(padx=10, pady=5, fill=BOTH)
+        Button(left_frame, text="VIEW LEDGERS", activeforeground = "white",activebackground = "#242323",bd=1, relief=GROOVE).pack(padx=10, pady=5, fill=BOTH)
+        Button(left_frame, text="REPORTS", activeforeground = "white",activebackground = "#242323",bd=1, relief=GROOVE).pack(padx=10, pady=5, fill=BOTH)
+        Button(left_frame, text="EXIT", activeforeground = "white",activebackground = "#242323",bd=1, relief=GROOVE, command=self.destroy).pack(padx=10, pady=5, fill=BOTH)
 
         container.pack(side="top", fill="both", expand=True)
         container.grid_rowconfigure(0, weight=1)
@@ -137,7 +148,7 @@ class SeaofBTCapp(tk.Tk):
         Label(Label_Frame1, text="Pincode", bg=background_color, fg=foreground_color, font=('Verdana',10)).grid(row=4, sticky=W, padx=3, pady=2)
         
          # ------------------------------ Labels on Label_Frame2 ----------------------------------#
-        Label(Label_Frame2, text="Phone No.", bg=background_color, fg=foreground_color, font=('Verdana',10)).grid(row=0, sticky=W, padx=3, pady=2)
+        Label(Label_Frame2, text="Telephone No.", bg=background_color, fg=foreground_color, font=('Verdana',10)).grid(row=0, sticky=W, padx=3, pady=2)
         Label(Label_Frame2, text="Mobile No.", bg=background_color, fg=foreground_color, font=('Verdana',10)).grid(row=1, sticky=W, padx=3, pady=2)
         Label(Label_Frame2, text="FAX No.", bg=background_color, fg=foreground_color, font=('Verdana',10)).grid(row=2, sticky=W, padx=3, pady=2)
         Label(Label_Frame2, text="E-mail Address", bg=background_color, fg=foreground_color, font=('Verdana',10)).grid(row=3, sticky=W, padx=3, pady=2)
@@ -218,13 +229,25 @@ class HomePage(tk.Frame):
         self.height = self.winfo_screenheight()
         self.bind("<Escape>", exit)  # Press <ESC> to exit
 
-        app_body = Frame(self, bd=0, relief=GROOVE,
-                         bg=background_color, padx=10, pady=10)
+        app_body = Frame(self, bd=0, relief=GROOVE, bg=background_color, padx=0, pady=0)
         app_body.place(x=0, y=0, width=self.width, height=self.width)
 
-        label = tk.Label(app_body, bg=background_color,
-                         fg=foreground_color, text="Home Page!!!", font=LARGE_FONT)
-        label.pack(pady=10, padx=10)
+        # ----------------- Top Frame ------------------------------- #
+        topMenu = Frame(app_body, bd=1, relief=GROOVE, padx=0, pady=0)
+        topMenu.pack(fill=X)
+        
+        Button(topMenu, text="MASTERS", bg=background_color, fg=foreground_color, bd=1, relief=GROOVE).grid(row=0, column=0, padx=2, pady=2)
+        Button(topMenu, text="STOCK", bg=background_color, fg=foreground_color, bd=1, relief=GROOVE).grid(row=0, column=1, padx=2, pady=2)
+        Button(topMenu, text="SALES", bg=background_color, fg=foreground_color, bd=1, relief=GROOVE).grid(row=0, column=2, padx=2, pady=2)
+        Button(topMenu, text="ACCOUNTS", bg=background_color, fg=foreground_color, bd=1, relief=GROOVE).grid(row=0, column=3, padx=2, pady=2)
+        Button(topMenu, text="VEW LEDGERS", bg=background_color, fg=foreground_color, bd=1, relief=GROOVE).grid(row=0, column=4, padx=2, pady=2)
+        Button(topMenu, text="REPORTS", bg=background_color, fg=foreground_color, bd=1, relief=GROOVE).grid(row=0, column=5, padx=2, pady=2)
+
+        label = Label(app_body, bg=background_color,
+                         fg=foreground_color, text="Home Page", font=LARGE_FONT)
+        label.pack(padx=10, pady=10)
+
+
 #--------------------------------- End HomePage ----------------------------------------#
 
 #--------------------------------- Start Page One ----------------------------------------#
@@ -242,8 +265,8 @@ class PageOne(tk.Frame):
         app_body.place(x=0, y=0, width=self.width, height=self.width)
 
         label = tk.Label(app_body, bg=background_color,
-                         fg=foreground_color, text="Page One!!!", font=LARGE_FONT)
-        label.pack(pady=10, padx=10)
+                         fg=foreground_color, text="MASTERS", font=LARGE_FONT)
+        label.grid(row=0, column=0,pady=10, padx=10)
 #--------------------------------- End Page One ----------------------------------------#
 
 
@@ -262,8 +285,8 @@ class PageTwo(tk.Frame):
         app_body.place(x=0, y=0, width=self.width, height=self.width)
 
         label = tk.Label(app_body, bg=background_color,
-                         fg=foreground_color, text="Page Two!!!", font=LARGE_FONT)
-        label.pack(pady=10, padx=10)
+                         fg=foreground_color, text="MY STOCK", font=LARGE_FONT)
+        label.grid(row=0, column=0,pady=10, padx=10)
 #--------------------------------- End Page Two ----------------------------------------#
 
 

@@ -15,7 +15,7 @@
 # app = App(root)
 # root.mainloop()
 
-#--------------------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------
 
 # import tkinter as tk
 
@@ -40,7 +40,7 @@
 #     def close_windows(self):
 #         self.master.destroy()
 
-# def main(): 
+# def main():
 #     root = tk.Tk()
 #     app = Demo1(root)
 #     root.mainloop()
@@ -49,27 +49,37 @@
 #     main()
 
 # ----------------------------------------------------------------------------------------------------------
-from sys import version_info
-if version_info.major == 2:
-    import Tkinter as tk
-elif version_info.major == 3:
-    import tkinter as tk
-    
-from functools import partial
-    
+# from sys import version_info
+# if version_info.major == 2:
+#     import Tkinter as tk
+# elif version_info.major == 3:
+#     import tkinter as tk
 
-    
-app = tk.Tk()
-labelExample = tk.Button(app, text="0")
+# from functools import partial
 
-def change_label_number(num):
-    counter = int(str(labelExample['text']))
-    counter += num
-    labelExample.config(text=str(counter))
-    
-buttonExample = tk.Button(app, text="Increase", width=30,
-                          command=partial(change_label_number, 2))
 
-buttonExample.pack()
-labelExample.pack()
-app.mainloop()
+# app = tk.Tk()
+# labelExample = tk.Button(app, text="0")
+
+# def change_label_number(num):
+#     counter = int(str(labelExample['text']))
+#     counter += num
+#     labelExample.config(text=str(counter))
+
+# buttonExample = tk.Button(app, text="Increase", width=30,
+#                           command=partial(change_label_number, 2))
+
+# buttonExample.pack()
+# labelExample.pack()
+# app.mainloop()
+
+# ------------------------------------------------------------------------------------------------------------------
+from tkinter import *
+root = Tk()
+root.overrideredirect(1)
+root.bind("<Escape>", exit)  # Press <ESC> to exit
+root.geometry("500x500+100+100")
+for r in range(10):
+   for c in range(5):
+      Label(root, text='Row%s / Column%s'%(r,c),bd=1, relief=GROOVE ).grid(row=r,column=c, padx=2, pady=2)
+root.mainloop()
