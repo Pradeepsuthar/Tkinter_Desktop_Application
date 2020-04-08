@@ -4,6 +4,8 @@ from tkinter import ttk, messagebox
 from random import randint
 from datetime import date
 from dbConfig import *
+from filehandler import *
+import pandas as pd
 
 # ----------- Global variables --------------------------------------#
 LARGE_FONT = ("Verdana", 12)
@@ -13,6 +15,12 @@ background_color, foreground_color = '#ffffff', '#232324'
 # background_color, foreground_color = '#3b3a3a' , '#ffffff'
 random_no = randint(1000000000, 9000000000)
 
+mycsv = CSVWriter()
+data = []
+row_data = []
+df = pd.read_csv(mycsv.fname())
+
+c_id = df['Company_id'].count()
 
 class SeaofBTCapp(tk.Tk):
 
@@ -22,7 +30,7 @@ class SeaofBTCapp(tk.Tk):
         self.width = self.winfo_screenwidth()
         self.height = self.winfo_screenheight()
         self.bind("<Escape>", exit)  # Press <ESC> to exit
-        self.overrideredirect(1)
+        # self.overrideredirect(1)
         self.geometry("%dx%d+0+0" % (self.width, self.height))
         self.title("Visual Studio Code 2020")
         self.iconbitmap('app_icon.ico')
@@ -215,6 +223,18 @@ class SeaofBTCapp(tk.Tk):
             print("Comapny FinancialYear_date_var :",FinancialYear_date_var)
             print("Comapny booking_date_var :",booking_date_var)
             print("Saved Company Data in Database")
+
+            
+
+            user_data = [c_id+1,c_name,c_address,countory,state,pincode,phone_no,mobile_no,fx_no,email,website_link,FinancialYear_date_var,booking_date_var]
+            row_data.append(user_data)
+            data.append(row_data)
+            mycsv.write(data[0],len(row_data))
+            mycsv.close()
+            print("Written %d bytes to %s" % (mycsv.size(), mycsv.fname()))
+
+
+
             messagebox.showinfo("Successfull Insert","Record inserted.")
             self.window.destroy()
         else:
@@ -282,11 +302,20 @@ class PageTwo(tk.Frame):
 
         app_body = Frame(self, bd=0, relief=GROOVE,
                          bg=background_color, padx=10, pady=10)
-        app_body.place(x=0, y=0, width=self.width, height=self.width)
+        app_body.pack(fill=BOTH)
+        
 
-        label = tk.Label(app_body, bg=background_color,
-                         fg=foreground_color, text="MY STOCK", font=LARGE_FONT)
-        label.grid(row=0, column=0,pady=10, padx=10)
+        for row in range(df.shape[0]):
+            for column in range(df.shape[1]):
+                if row < 0:
+                    th = Label(app_body, text=df.columns[column], fg=foreground_color, font=("Verdana", 10), padx=3, pady=3, bd=1, relief=GROOVE)
+                    th.config(font=('Arial',14))
+                    th.grid(row=row, column=column, sticky='nsew', padx=1, pady=1)
+                    app_body.grid_columnconfigure(column, weight=1)
+                else:
+                    td = Label(app_body, text=df[df.columns[column]][row], bg=background_color, fg=foreground_color, font=("Verdana", 10), padx=3, pady=3, bd=1, relief=GROOVE)
+                    td.grid(row=row, column=column, sticky='nsew', padx=1, pady=1)
+                    app_body.grid_columnconfigure(column, weight=1)
 #--------------------------------- End Page Two ----------------------------------------#
 
 
